@@ -1,16 +1,16 @@
 #ifndef WIFI_MANAGER_H
 #define WIFI_MANAGER_H
 
-#include "LEDController.h"
+#include <WiFi.h>
 
 class WiFiManager {
-private:
-    LEDController& led;
-    
 public:
-    WiFiManager(LEDController& ledController);
     bool connect();
     bool isConnected();
+    void printStatus();
+    
+private:
+    const int MAX_RETRIES = 20;
 };
 
 #endif

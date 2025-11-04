@@ -3,16 +3,26 @@
 
 #include <Arduino.h>
 
-namespace Config {
-    extern const char* WIFI_SSID;
-    extern const char* WIFI_PASSWORD;
-    extern const String FIREBASE_BUCKET;
-    
-    extern const int LED_BLUE;
-    extern const int LED_AMBER;
-    extern const int CHECK_INTERVAL_MS;
-    extern const int LED_FLASH_COUNT;
-    extern const int LED_FLASH_DELAY_MS;
-}
+// WiFi Configuration
+extern const char* WIFI_SSID;
+extern const char* WIFI_PASSWORD;
+
+// Firebase Configuration
+extern const String FIREBASE_PROJECT;
+extern const String FIREBASE_STORAGE_BUCKET;
+
+// E-ink Display Pins
+extern const int EPD_CS;
+extern const int EPD_DC;
+extern const int EPD_RST;
+extern const int EPD_BUSY;
+extern const int EPD_PWR;  // Power control for Rev 2.3
+
+// LED Pins
+extern const int BLUE_LED_PIN;
+extern const int AMBER_LED_PIN;
+
+// Timing
+extern const unsigned long CHECK_INTERVAL;  // How often to check Firebase (ms)
 
 #endif
