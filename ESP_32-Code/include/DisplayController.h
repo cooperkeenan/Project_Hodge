@@ -1,8 +1,9 @@
 #ifndef DISPLAY_CONTROLLER_H
 #define DISPLAY_CONTROLLER_H
 
-#include <GxEPD2_BW.h>
 #include <Arduino.h>
+#include <GxEPD2_BW.h>
+#include <SD.h>
 
 class DisplayController {
 public:
@@ -10,12 +11,12 @@ public:
     void powerOn();
     void powerOff();
     void showMessage(const char* message);
-    void displayImage(uint8_t* imageData, size_t size);
     void clear();
+    void displayImageFromSD(const String& filename);  // NEW!
     
 private:
-    GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT>* display;
-    bool isPowered;
+    GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT>* display = nullptr;
+    bool isPowered = false;
 };
 
 #endif
