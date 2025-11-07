@@ -18,6 +18,9 @@ extern const int EPD_RST;
 extern const int EPD_BUSY;
 extern const int EPD_PWR;  // Power control for Rev 2.3
 
+// SD Card Pin
+extern const int SD_CS;
+
 // LED Pins
 extern const int BLUE_LED_PIN;
 extern const int AMBER_LED_PIN;

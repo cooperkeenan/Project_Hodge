@@ -7,12 +7,13 @@
 
 class FirebaseClient {
 public:
-    bool checkForNewImage(String& imageUrl, unsigned long& timestamp);
-    bool downloadImage(const String& url, uint8_t** buffer, size_t* size);
+    bool checkForNewImage(String& imageUrl, unsigned long long& timestamp);
+    bool downloadImageToSD(const String& url, const String& filename);  // NEW!
+    bool downloadImage(const String& url, uint8_t** buffer, size_t* size);  // Old (deprecated)
     
 private:
     String getLatestImageUrl();
-    unsigned long lastCheckedTimestamp = 0;
+    unsigned long long lastCheckedTimestamp = 0;
 };
 
 #endif

@@ -18,9 +18,12 @@ void DisplayController::init() {
 
 void DisplayController::powerOn() {
     if (!isPowered) {
+        // ⚠️ CRITICAL: Deselect SD card before using display!
+        digitalWrite(SD_CS, HIGH);
+        
         digitalWrite(EPD_PWR, HIGH);
         delay(100);  // Give display time to power up
-        display->init(115200);
+        display->init(115200, true, 2, false);
         isPowered = true;
         Serial.println("Display powered ON");
     }
@@ -38,8 +41,21 @@ void DisplayController::powerOff() {
 void DisplayController::showMessage(const char* message) {
     powerOn();
     
+    // Deselect SD card during display operations
+    digitalWrite(SD_CS, HIGH);
+    
     display->setRotation(1);
     display->setFullWindow();
+    
+    // IMPORTANT: Do a full clear first to prevent ghosting/graininess
+    display->firstPage();
+    do {
+        display->fillScreen(GxEPD_WHITE);
+    } while (display->nextPage());
+    
+    delay(100);  // Brief pause between clear and draw
+    
+    // Now draw the message
     display->firstPage();
     do {
         display->fillScreen(GxEPD_WHITE);
@@ -55,6 +71,9 @@ void DisplayController::showMessage(const char* message) {
 void DisplayController::clear() {
     powerOn();
     
+    // Deselect SD card
+    digitalWrite(SD_CS, HIGH);
+    
     display->setFullWindow();
     display->firstPage();
     do {
@@ -67,12 +86,21 @@ void DisplayController::clear() {
 void DisplayController::displayImage(uint8_t* imageData, size_t size) {
     powerOn();
     
-    // For now, we'll display a placeholder
-    // Full PNG decoding requires additional libraries
-    // This shows that we received the image
+    // Deselect SD card
+    digitalWrite(SD_CS, HIGH);
     
     display->setRotation(1);
     display->setFullWindow();
+    
+    // Clear first
+    display->firstPage();
+    do {
+        display->fillScreen(GxEPD_WHITE);
+    } while (display->nextPage());
+    
+    delay(100);
+    
+    // Show placeholder
     display->firstPage();
     do {
         display->fillScreen(GxEPD_WHITE);
@@ -83,12 +111,9 @@ void DisplayController::displayImage(uint8_t* imageData, size_t size) {
         display->setCursor(10, 60);
         display->printf("Size: %d bytes", size);
         
-        // Draw a box to show we got data
         display->drawRect(50, 100, 700, 380, GxEPD_BLACK);
         display->setCursor(100, 300);
-        display->println("Image data downloaded");
-        display->setCursor(100, 330);
-        display->println("(PNG decoding coming soon)");
+        display->println("Saved to SD Card");
         
     } while (display->nextPage());
     
